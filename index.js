@@ -6,6 +6,9 @@ const pickupTime = document.getElementById('pickupTime');
 const searchButton = document.getElementById('searchButton');
 const passengers = document.getElementById('passengers');
 
+// Variabel global untuk menyimpan data mobil dengan tanggal yang sudah diacak
+let carsWithRandomDates = [];
+
 // Fungsi untuk mengecek apakah semua field sudah terisi
 function validateForm() {
     if (driverType.value !== "" && date.value !== "" && pickupTime.value !== "" && passengers.value !== "") {
@@ -21,38 +24,46 @@ date.addEventListener('input', validateForm);
 pickupTime.addEventListener('input', validateForm);
 passengers.addEventListener('input', validateForm);
 
-
+// ketika tombol submit ditekan
 searchForm.addEventListener("submit", async(e) => {
   e.preventDefault();
   const passengers = document.getElementById("passengers").value;
   const date = document.getElementById("date").value;
+
+  // Cek apakah data dengan tanggal acak sudah ada, jika belum generate tanggal
+  if (carsWithRandomDates.length === 0) {
+    await generateRandomDatesForCars(); // Generate tanggal acak sekali
+    console.log(carsWithRandomDates);
+  }
+
   await searchresultContent(passengers, date);
 });
 
-const getCarData = async (passengers, date) => {
+const generateRandomDatesForCars = async () => {
   const response = await fetch("./cars.json");
-  let data = await response.json();
+  const data = await response.json();
   
-  // Generate random date between today and 6 months from now
+  // Fungsi untuk generate tanggal acak
   const randomDate = (start, end) => {
     const randomTime = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
     return randomTime.toISOString().split('T')[0]; // Format to YYYY-MM-DD
   };
 
-  // Set today's date
+  // Tanggal hari ini dan 3 bulan ke depan
   const today = new Date();
-  // Set 6 months from now
-  const sixMonthsLater = new Date();
-  sixMonthsLater.setMonth(today.getMonth() + 6);
+  const MonthsLater = new Date();
+  MonthsLater.setMonth(today.getMonth() + 3);
 
-  // Replace car.availableAt with random date
-  data = data.map((car) => {
-    car.availableAt = randomDate(today, sixMonthsLater);
+  // Mengubah tanggal `availableAt` hanya sekali
+  carsWithRandomDates = data.map((car) => {
+    car.availableAt = randomDate(today, MonthsLater);
     return car;
   });
+};
 
-  // Filter data based on passengers and date
-  const filteredData = data.filter((car) => {
+
+const getCarData = async (passengers, date) => {
+  const filteredData = carsWithRandomDates.filter((car) => {
     return (
       parseInt(passengers) <= car.capacity &&
       date >= car.availableAt
@@ -62,8 +73,6 @@ const getCarData = async (passengers, date) => {
   filteredData.sort((a, b) => a.capacity - b.capacity);
   return filteredData;
 };
-
-
 
 
 async function searchresultContent(passengers, date) {
