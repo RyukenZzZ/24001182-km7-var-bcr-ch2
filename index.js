@@ -11,7 +11,7 @@ let carsWithRandomDates = [];
 
 // Fungsi untuk mengecek apakah semua field sudah terisi
 function validateForm() {
-    if (driverType.value !== "" && date.value !== "" && pickupTime.value !== "" && passengers.value !== "") {
+    if (driverType.value !== "" && date.value !== "" && pickupTime.value !== "") {
         searchButton.disabled = false;  // Aktifkan tombol jika semua field terisi
     } else {
         searchButton.disabled = true;  // Nonaktifkan tombol jika ada field kosong
@@ -22,12 +22,11 @@ function validateForm() {
 driverType.addEventListener('change', validateForm);
 date.addEventListener('input', validateForm);
 pickupTime.addEventListener('input', validateForm);
-passengers.addEventListener('input', validateForm);
 
 // ketika tombol submit ditekan
 searchForm.addEventListener("submit", async(e) => {
   e.preventDefault();
-  const passengers = document.getElementById("passengers").value;
+  const passengers = document.getElementById("passengers").value || 1; //membuat nilai default 1 jika tidak diisi
   const date = document.getElementById("date").value;
 
   // Cek apakah data dengan tanggal acak sudah ada, jika belum generate tanggal
