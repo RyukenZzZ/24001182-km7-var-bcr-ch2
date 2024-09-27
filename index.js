@@ -33,7 +33,7 @@ searchForm.addEventListener("submit", async(e) => {
   // Cek apakah data dengan tanggal acak sudah ada, jika belum generate tanggal
   if (carsWithRandomDates.length === 0) {
     await generateRandomDatesForCars(); // Generate tanggal acak sekali
-    console.log(carsWithRandomDates);
+    console.log("Cars Date After changes : ", carsWithRandomDates);
   }
 
   await searchresultContent(passengers, date);
@@ -49,10 +49,10 @@ const generateRandomDatesForCars = async () => {
     return randomTime.toISOString().split('T')[0]; // Format to YYYY-MM-DD
   };
 
-  // Tanggal hari ini dan 3 bulan ke depan
+  // Tanggal hari ini dan 1 bulan ke depan
   const today = new Date();
   const MonthsLater = new Date();
-  MonthsLater.setMonth(today.getMonth() + 3);
+  MonthsLater.setMonth(today.getMonth() + 1);
 
   // Mengubah tanggal `availableAt` hanya sekali
   carsWithRandomDates = data.map((car) => {
@@ -66,7 +66,7 @@ const getCarData = async (passengers, date) => {
   const filteredData = carsWithRandomDates.filter((car) => {
     return (
       parseInt(passengers) <= car.capacity &&
-      date >= car.availableAt
+      date === car.availableAt
     );
   });
   
