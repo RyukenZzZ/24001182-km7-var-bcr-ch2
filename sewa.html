@@ -60,10 +60,10 @@
 </section>
 
 <div class="container my-5">
-  <form id="carSearchForm" method="GET" action="">
+  <form id="carSearchForm" method="GET" action="" class="border rounded p-3">
     <div class="row g-3 align-items-center">
         <!-- Tipe Driver -->
-        <div class="col-md-3">
+        <div class="col-md-6 col-lg-3">
             <label for="driverType" class="form-label">Tipe Driver</label>
             <select class="form-select" id="driverType" name="driverType" required>
                 <option value="" disabled selected>Pilih Tipe Driver</option>
@@ -73,25 +73,25 @@
         </div>
 
         <!-- Tanggal -->
-        <div class="col-md-2">
+        <div class="col-md-6 col-lg-2">
             <label for="date" class="form-label">Tanggal</label>
             <input type="date" class="form-control" id="date" name="date" required>
         </div>
 
         <!-- Waktu Jemput/Ambil -->
-        <div class="col-md-2">
+        <div class="col-md-6 col-lg-2">
             <label for="pickupTime" class="form-label">Waktu Jemput/Ambil</label>
             <input type="time" class="form-control" id="pickupTime" name="pickupTime" required>
         </div>
 
         <!-- Jumlah Penumpang (Optional) -->
-        <div class="col-md-3">
+        <div class="col-md-6 col-lg-3">
             <label for="passengers" class="form-label">Jumlah Penumpang (optional)</label>
             <input type="number" class="form-control" id="passengers" name="passengers" placeholder="Jumlah Penumpang" min="0">
         </div>
 
         <!-- Button Cari Mobil -->
-        <div class="col-md-2">
+        <div class="col-md-3 col-lg-2">
             <button type="submit" id="searchButton" class="btn btn-success mt-4 w-100" disabled>Cari Mobil</button>
         </div>
     </div>
